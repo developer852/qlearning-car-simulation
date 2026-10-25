@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Autonomous Q-Learning Vehicle Simulation</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 3D WebGL Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Showcase Demo HUD Overlay -->
+    <div id="hud">
+        <!-- Top Bar: Title & Fleet Controls -->
+        <div class="top-bar">
+            <div class="brand-badge">
+                <div class="brand-title">Autonomous Q-Learning Simulation</div>
+                <div class="brand-subtitle">Multi-Agent RL • Obstacle Avoidance & Lane Keeping</div>
+            </div>
+
+            <div class="controls-group">
+                <!-- Agent Fleet Size Stepper Controls -->
+                <div class="agent-stepper">
+                    <button id="btn-sub-agent" class="stepper-btn" title="Decrease Agents">−</button>
+                    <div class="stepper-label">
+                        <span id="agent-count-val">4</span>
+                        <span>CARS</span>
+                    </div>
+                    <button id="btn-add-agent" class="stepper-btn" title="Increase Agents">+</button>
+                </div>
+
+                <!-- Simulation Action Buttons -->
+                <button id="btn-camera" class="demo-btn">CHASE LEADER</button>
+                <button id="btn-next-agent" class="demo-btn">NEXT AI</button>
+                <button id="btn-sim-speed" class="demo-btn">1x SPEED</button>
+                <button id="btn-toggle-sensors" class="demo-btn">SENSORS ON</button>
+                <button id="btn-reset-brain" class="demo-btn btn-danger">CLEAR MEMORY</button>
+            </div>
+        </div>
+
+        <!-- Center Top: Proximity Radar Sensor Alert for Focused Agent -->
+        <div class="radar-container">
+            <div id="radar-status" class="radar-alert clear">
+                <div class="radar-indicator"></div>
+                <span id="radar-text">LANE CLEAR</span>
+                <span id="radar-dist">—</span>
+            </div>
+        </div>
+
+        <!-- Notification Banner -->
+        <div id="notification-banner"></div>
+
+        <!-- Bottom Bar: Q-Learning Telemetry Dashboard & Speedometer -->
+        <div class="bottom-bar">
+            <!-- Left: Real-time Q-Learning Training Metrics -->
+            <div class="rl-dashboard">
+                <div class="rl-header">
+                    <div class="rl-title">
+                        <span class="live-pill">LIVE RL</span>
+                        <span>Shared Collective Memory</span>
+                    </div>
+                </div>
+
+                <div class="rl-metrics-grid">
+                    <div class="metric-item">
+                        <span class="metric-label">Q-States Learned</span>
+                        <span id="stat-states" class="metric-val highlight">0</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Exploration (&epsilon;)</span>
+                        <span id="stat-epsilon" class="metric-val">65%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Episodes / Runs</span>
+                        <span id="stat-episodes" class="metric-val">0</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Avoidances</span>
+                        <span id="stat-avoidances" class="metric-val success">0</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Collisions</span>
+                        <span id="stat-collisions" class="metric-val danger">0</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Current Action</span>
+                        <span id="stat-action" class="metric-val">GAS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Speedometer & Focused Vehicle Tracking -->
+            <div class="telemetry-card">
+                <div id="agent-focus-badge">TRACKING AI #1</div>
+                <div class="speed-main">
+                    <div id="speed-value">0</div>
+                    <div class="speed-unit">KM/H</div>
+                </div>
+                <div class="action-status">Controls: <kbd>[+]</kbd> <kbd>[-]</kbd> Fleet &nbsp;|&nbsp; <kbd>C</kbd> Camera &nbsp;|&nbsp; <kbd>N</kbd> Focus</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Loader -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">Initializing Q-Learning Simulation...</div>
+    </div>
+
+    <!-- Scripts (Loaded in topological dependency order) -->
+    <script src="js/three.min.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/environment.js"></script>
+    <script src="js/obstacles.js"></script>
+    <script src="js/traffic.js"></script>
+    <script src="js/qlearning.js"></script>
+    <script src="js/agent.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Safety loader fallback -->
+    <script>
+        setTimeout(function() {
+            var loader = document.getElementById('loader');
+            if (loader && loader.style.display !== 'none') {
+                loader.style.opacity = '0';
+                setTimeout(function() { loader.style.display = 'none'; }, 200);
+            }
+        }, 1500);
+    </script>
+</body>
+</html>
